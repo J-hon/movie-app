@@ -20,11 +20,13 @@ Route::prefix('auth')->group(function () {
     Route::post('signup', [AuthenticationController::class, 'signup']);
 });
 
-Route::prefix('movies')->group(function () {
-    Route::get('', [MovieController::class, 'index']);
-    Route::get('genres', [MovieController::class, 'genres']);
-});
-
 Route::middleware('auth:sanctum')->group(function () {
-    //
+    Route::prefix('movies')->group(function () {
+        Route::get('', [MovieController::class, 'index']);
+
+        Route::prefix('list')->group(function () {
+            Route::post('add', [MovieController::class, 'add']);
+            Route::delete('remove', [MovieController::class, 'remove']);
+        });
+    });
 });
