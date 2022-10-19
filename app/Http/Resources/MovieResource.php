@@ -20,7 +20,7 @@ class MovieResource extends JsonResource
             'overview'     => $this->overview,
             'release_date' => $this->release_date,
             'image'        => 'https://image.tmdb.org/t/p/w500'.$this->image,
-            'genres'       => $this->genres
+            'genres'       => $this->genres->map(fn ($genre) => $genre->name)
         ];
     }
 }

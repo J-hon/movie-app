@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 class MovieService
@@ -14,6 +15,24 @@ class MovieService
         return [
             'status'  => true,
             'message' => 'Movies retrieved!',
+            'code'    => 200,
+            'data'    => $response
+        ];
+    }
+
+    public function getMovieList(int $userId): array
+    {
+        $response = User::with('movies')
+            ->where('id', '=', $userId)
+            ->get()
+            ->map(function ($user) {
+                return $user->movies;
+            })
+            ->flatten();
+
+        return [
+            'status'  => true,
+            'message' => 'Movie list retrieved!',
             'code'    => 200,
             'data'    => $response
         ];
