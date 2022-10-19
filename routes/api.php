@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthenticationController::class, 'login']);
     Route::post('signup', [AuthenticationController::class, 'signup']);
+});
+
+Route::prefix('movies')->group(function () {
+    Route::get('', [MovieController::class, 'index']);
+    Route::get('genres', [MovieController::class, 'genres']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
