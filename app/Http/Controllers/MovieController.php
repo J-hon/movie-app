@@ -26,6 +26,17 @@ class MovieController extends BaseController
         );
     }
 
+    public function fetch(): JsonResponse
+    {
+        $response = $this->movieService->getMovieList(Auth::id());
+        return $this->responseJson(
+            $response['status'],
+            $response['code'],
+            $response['message'],
+            MovieResource::collection($response['data'])
+        );
+    }
+
     public function add(MovieToListRequest $request): JsonResponse
     {
         $response = $this->movieService->addToMovieList(Auth::user(), $request->validated());
