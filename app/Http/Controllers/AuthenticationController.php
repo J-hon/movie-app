@@ -6,6 +6,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
 use App\Services\AuthenticationService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class AuthenticationController extends BaseController
 {
@@ -34,5 +35,11 @@ class AuthenticationController extends BaseController
             $response['message'],
             $response['data']
         );
+    }
+
+    public function logout(): JsonResponse
+    {
+        Auth::logout();
+        return $this->responseJson(true, 200, 'Successfully logged out');
     }
 }
