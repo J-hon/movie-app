@@ -1,19 +1,28 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Login from '../Pages/Auth/Login';
 import Dashboard from '../Pages/Dashboard';
 import Register from '../Pages/Auth/Register';
 import MyMovies from '../Pages/MyMovies';
 import PageNotFound from "../Pages/PageNotFound";
-import TokenService from "../services/token";
 import { ToastContainer } from "react-toastify";
+import RequireAuth from "../Middleware/auth";
+import Guest from "../Middleware/guest";
 
 export default function App() {
     return (
         <>
             <Routes>
-                <Route path="/" index element={<Login />} />
-                <Route path="/register" element={<Register />} />
+                <Route path="/" index element={
+                    <Guest redirectTo="/dashboard">
+                        <Login />
+                    </Guest>
+                } />
+                <Route path="/register" element={
+                    <Guest redirectTo="/dashboard">
+                        <Register />
+                    </Guest>
+                } />
                 <Route path="*" element={<PageNotFound />} />
                 <Route
                     path="/dashboard"
@@ -47,9 +56,4 @@ export default function App() {
             />
         </>
     );
-}
-
-function RequireAuth({ children, redirectTo }) {
-    let isAuthenticated = TokenService.getIsLoggedIn();
-    return isAuthenticated ? children : <Navigate to={ redirectTo } />;
 }

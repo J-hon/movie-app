@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Auth from '../Layouts/Auth';
-import moviesService from "../services/movies";
+import MovieService from "../services/movies";
 import Add from "../Components/Buttons/Add";
 import Remove from "../Components/Buttons/Remove";
 import { toast } from 'react-toastify';
@@ -12,7 +12,7 @@ export default function Dashboard() {
     const [ trigger, setTrigger ] = useState(false);
 
     useEffect(() => {
-        moviesService.get()
+        MovieService.get()
             .then(response => {
                 setMovies(response.data)
             })
@@ -22,7 +22,7 @@ export default function Dashboard() {
     }, [trigger]);
 
     const addToMovieList = (id) => {
-        moviesService.add(id)
+        MovieService.add(id)
             .then(response => {
                 setTrigger(prevState => !prevState);
                 toast(response.message);
@@ -33,7 +33,7 @@ export default function Dashboard() {
     }
 
     const removeFromMovieList = (id) => {
-        moviesService.remove(id)
+        MovieService.remove(id)
             .then(response => {
                 setTrigger(prevState => !prevState);
                 toast(response.message);
