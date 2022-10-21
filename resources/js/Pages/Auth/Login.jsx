@@ -4,19 +4,20 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/authService";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth.module";
-import {toast} from "react-toastify";
 
 export default function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [data, setData] = useState({
+    const [ errors, setErrors ] = useState([]);
+
+    const [ data, setData ] = useState({
         email: "",
         password: ""
     });
 
     const onHandleChange = e => {
-        setData({...data, [e.target.name] : e.target.value });
+        setData({ ...data, [ e.target.name ] : e.target.value });
     };
 
     const submit = e => {
@@ -24,21 +25,12 @@ export default function Login() {
 
         AuthService.login(data)
             .then(response => {
-                toast(response.message);
                 dispatch(authActions.setAuth(response.data));
                 navigate('/dashboard');
             })
             .catch(err => {
-                toast.error(err.response.data.message, {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light"
-                });
+                setErrors(err.response.data);
+                console.log(err.response.data);
             });
     }
 
@@ -46,8 +38,8 @@ export default function Login() {
         <Guest>
             <div className="max-w-sm mx-auto px-4 py-8">
                 <h1 className="text-3xl text-slate-800 font-bold mb-6">Login</h1>
-                {/* Form */}
-                <form onSubmit={submit}>
+
+                <form onSubmit={ submit }>
                     <div className="space-y-4">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium mb-1">

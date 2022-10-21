@@ -27,7 +27,6 @@ export default function Register() {
 
         AuthService.register(data)
             .then(response => {
-                toast('Registration successful');
                 dispatch(authActions.setAuth(response.data));
                 navigate('/dashboard');
             })

@@ -19,7 +19,7 @@ export default function Dashboard() {
             .catch(err => {
                 console.log(err.response.data);
             });
-    }, [trigger]);
+    }, [ trigger ]);
 
     const addToMovieList = (id) => {
         MovieService.add(id)

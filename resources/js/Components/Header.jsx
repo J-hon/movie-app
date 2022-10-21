@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import TokenService from "../services/token";
 import AuthService from "../services/authService";
-import {toast} from "react-toastify";
 
 export default function AppHeader() {
 
@@ -21,7 +20,6 @@ export default function AppHeader() {
         AuthService.logout()
             .then(response => {
                 TokenService.removeUser();
-                toast(response.message);
                 navigate('/');
             })
             .catch(err => {
