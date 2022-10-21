@@ -14,7 +14,8 @@ export default function Register() {
     const [data, setData] = useState({
         name: "",
         email: "",
-        password: ""
+        password: "",
+        password_confirmation: ""
     });
 
     const onHandleChange = e => {
@@ -26,12 +27,21 @@ export default function Register() {
 
         AuthService.register(data)
             .then(response => {
-                toast(response.message);
+                toast('Registration successful');
                 dispatch(authActions.setAuth(response.data));
                 navigate('/dashboard');
             })
             .catch(err => {
-                console.log(err.response.data);
+                toast.error(err.response.data.message, {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                });
             });
     }
 
@@ -62,12 +72,12 @@ export default function Register() {
                             <input onChange={ onHandleChange } name="password" type="password" className="pl-3 h-12 block w-full max-w-lg rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
                         </div>
 
-                        {/*<div>*/}
-                        {/*    <label htmlFor="password_confirmation" className="block text-sm font-medium mb-1">*/}
-                        {/*        Password Confirmation*/}
-                        {/*    </label>*/}
-                        {/*    <input onChange={ onHandleChange } name="password_confirmation" type="password" className="pl-3 h-12 block w-full max-w-lg rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>*/}
-                        {/*</div>*/}
+                        <div>
+                            <label htmlFor="password_confirmation" className="block text-sm font-medium mb-1">
+                                Password Confirmation
+                            </label>
+                            <input onChange={ onHandleChange } name="password_confirmation" type="password" className="pl-3 h-12 block w-full max-w-lg rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+                        </div>
                     </div>
 
                     <div className="flex items-center justify-between mt-6">

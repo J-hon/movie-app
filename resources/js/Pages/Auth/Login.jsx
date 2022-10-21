@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/authService";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth.module";
+import {toast} from "react-toastify";
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -23,11 +24,21 @@ export default function Login() {
 
         AuthService.login(data)
             .then(response => {
+                toast(response.message);
                 dispatch(authActions.setAuth(response.data));
                 navigate('/dashboard');
             })
             .catch(err => {
-                console.log(err.response.data);
+                toast.error(err.response.data.message, {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                });
             });
     }
 
@@ -42,7 +53,7 @@ export default function Login() {
                             <label htmlFor="email" className="block text-sm font-medium mb-1">
                                 Email
                             </label>
-                            <input onChange={ onHandleChange } name="email" className="pl-3 h-12 block w-full max-w-lg rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+                            <input onChange={ onHandleChange } type="email" name="email" className="pl-3 h-12 block w-full max-w-lg rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
                         </div>
 
                         <div>

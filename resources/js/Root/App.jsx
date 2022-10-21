@@ -1,12 +1,12 @@
 import React from "react";
-import {Routes, Route, BrowserRouter, Navigate} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from '../Pages/Auth/Login';
 import Dashboard from '../Pages/Dashboard';
 import Register from '../Pages/Auth/Register';
 import MyMovies from '../Pages/MyMovies';
 import PageNotFound from "../Pages/PageNotFound";
 import TokenService from "../services/token";
-import {ToastContainer} from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 export default function App() {
     return (
@@ -32,6 +32,7 @@ export default function App() {
                     }
                 />
             </Routes>
+
             <ToastContainer
                 position="bottom-right"
                 autoClose={5000}
