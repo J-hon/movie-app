@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('auth')->group(function () {
+    Route::post('login', [AuthenticationController::class, 'login']);
+    Route::post('signup', [AuthenticationController::class, 'signup']);
+    Route::post('logout', [AuthenticationController::class, 'logout']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('movies', [MovieController::class, 'index']);
+
+    Route::prefix('user')->group(function () {
+        Route::prefix('movies')->group(function () {
+            Route::get('', [MovieController::class, 'fetch']);
+            Route::post('add', [MovieController::class, 'add']);
+            Route::delete('remove/{id}', [MovieController::class, 'remove']);
+        });
+    });
 });
