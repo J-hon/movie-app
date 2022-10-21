@@ -14,12 +14,12 @@ class UserRepository extends BaseRepository implements UserContract
         $this->model = $model;
     }
 
-    public function addToMovieList(int $userId, int $movieId): mixed
+    public function addToMovieList(int $userId, int $movieId): array
     {
         return $this->find($userId)->movies()->syncWithoutDetaching($movieId);
     }
 
-    public function removeFromMovieList(int $userId, int $movieId): mixed
+    public function removeFromMovieList(int $userId, int $movieId): int
     {
         return $this->find($userId)->movies()->detach($movieId);
     }

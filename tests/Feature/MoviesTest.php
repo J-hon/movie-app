@@ -20,7 +20,8 @@ class MoviesTest extends TestCase
     {
         $movie = Movie::factory()->create();
 
-        $this->postJson("$this->baseUrl/movies/list/add", ['movie_id' => $movie->id])->assertStatus(200);
+        $this->postJson("$this->baseUrl/user/movies/add", ['movie_id' => $movie->id])
+            ->assertStatus(200);
 
         $this->assertDatabaseHas('movie_lists', [
             'user_id'  => $this->user->id,
@@ -36,7 +37,8 @@ class MoviesTest extends TestCase
 
         $this->user->movies()->attach(Movie::factory(10)->create()->pluck('id')->toArray());
 
-        $this->postJson("$this->baseUrl/movies/list/add", ['movie_id' => $movie->id])->assertStatus(422);
+        $this->postJson("$this->baseUrl/user/movies/add", ['movie_id' => $movie->id])
+            ->assertStatus(422);
     }
 
     public function test_user_can_remove_movie_from_list()
@@ -45,7 +47,8 @@ class MoviesTest extends TestCase
 
         $this->user->movies()->attach($movie->id);
 
-        $this->deleteJson("$this->baseUrl/movies/list/remove", ['movie_id' => $movie->id])->assertStatus(200);
+        $this->deleteJson("$this->baseUrl/user/movies/remove/$movie->id")
+            ->assertStatus(200);
 
         $this->assertDatabaseMissing('movie_lists', [
             'user_id'  => $this->user->id,

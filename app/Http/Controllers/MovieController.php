@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddMovieToListRequest;
-use App\Http\Requests\RemoveMovieFromListRequest;
 use App\Http\Resources\MovieResource;
 use App\Services\MovieService;
 use Illuminate\Http\JsonResponse;
@@ -44,14 +43,13 @@ class MovieController extends BaseController
         return $this->responseJson(
             $response['status'],
             $response['code'],
-            $response['message'],
-            MovieResource::collection($response['data'])
+            $response['message']
         );
     }
 
-    public function remove(RemoveMovieFromListRequest $request): JsonResponse
+    public function remove(int $movieId): JsonResponse
     {
-        $response = $this->movieService->removeFromMovieList(Auth::id(), $request->validated());
+        $response = $this->movieService->removeFromMovieList(Auth::id(), $movieId);
         return $this->responseJson(
             $response['status'],
             $response['code'],

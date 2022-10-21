@@ -47,12 +47,12 @@ class MovieService
         ];
     }
 
-    public function removeFromMovieList(int $userId, array $params): array
+    public function removeFromMovieList(int $userId, int $movieId): array
     {
-        $this->userRepository->removeFromMovieList($userId, $params['movie_id']);
+        $this->userRepository->removeFromMovieList($userId, $movieId);
         return [
             'status'  => true,
-            'message' => 'Movie added to list!',
+            'message' => 'Movie removed from list!',
             'code'    => 200,
             'data'    => []
         ];
