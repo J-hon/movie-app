@@ -2,14 +2,18 @@
 
 namespace App\Services;
 
+use App\Contracts\UserContract;
 use App\Http\Resources\UserResource;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
 
 class AuthenticationService
 {
+
+    public function __construct(protected UserContract $userRepository)
+    {
+    }
 
     public function login(array $data): array
     {
@@ -53,7 +57,7 @@ class AuthenticationService
             $unHashedPassword = $data['password'];
             $data['password'] = Hash::make($data['password']);
 
-            $user = User::create($data);
+            $user = $this->userRepository->create($data);
 
             return $this->login([
                 'email'    => $user->email,
