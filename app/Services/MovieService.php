@@ -2,16 +2,21 @@
 
 namespace App\Services;
 
-use App\Models\Movie;
-use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
+use App\Contracts\MovieContract;
+use App\Contracts\UserContract;
 
 class MovieService
 {
 
+    public function __construct(
+        protected MovieContract $movieRepository,
+        protected UserContract  $userRepository
+    ) {
+    }
+
     public function get(): array
     {
-        $response = Movie::with('genres:id,name')->get();
+        $response = $this->movieRepository->get();
         return [
             'status'  => true,
             'message' => 'Movies retrieved!',
@@ -22,14 +27,7 @@ class MovieService
 
     public function getMovieList(int $userId): array
     {
-        $response = User::with('movies')
-            ->where('id', '=', $userId)
-            ->get()
-            ->map(function ($user) {
-                return $user->movies;
-            })
-            ->flatten();
-
+        $response = $this->movieRepository->getUserMovieList($userId);
         return [
             'status'  => true,
             'message' => 'Movie list retrieved!',
@@ -38,27 +36,9 @@ class MovieService
         ];
     }
 
-    public function addToMovieList(Authenticatable $user, array $params): array
+    public function addToMovieList(int $userId, array $params): array
     {
-        if ($user->movies()->where('movie_id', '=', $params['movie_id'])->exists()) {
-            return [
-                'status'  => false,
-                'message' => 'Movie already in list!',
-                'code'    => 400,
-                'data'    => []
-            ];
-        }
-
-        if ($user->movies()->count() >= 10) {
-            return [
-                'status'  => false,
-                'message' => 'Oops! Movie list is full! You can only add a maximum of 10 movies to your list',
-                'code'    => 400,
-                'data'    => []
-            ];
-        }
-
-        $user->movies()->syncWithoutDetaching($params);
+        $this->userRepository->addToMovieList($userId, $params['movie_id']);
         return [
             'status'  => true,
             'message' => 'Movie added to list!',
@@ -67,18 +47,9 @@ class MovieService
         ];
     }
 
-    public function removeFromMovieList(Authenticatable $user, int $movieId): array
+    public function removeFromMovieList(int $userId, int $movieId): array
     {
-        if (!$user->movies()->where('movie_id', '=', $movieId)->exists()) {
-            return [
-                'status'  => false,
-                'message' => 'Movie not found in your list!',
-                'code'    => 400,
-                'data'    => []
-            ];
-        }
-
-        $user->movies()->detach($movieId);
+        $this->userRepository->removeFromMovieList($userId, $movieId);
         return [
             'status'  => true,
             'message' => 'Movie removed from list!',

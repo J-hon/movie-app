@@ -22,10 +22,10 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix('movies')->group(function () {
-        Route::get('', [MovieController::class, 'index']);
+    Route::get('movies', [MovieController::class, 'index']);
 
-        Route::prefix('list')->group(function () {
+    Route::prefix('user')->group(function () {
+        Route::prefix('movies')->group(function () {
             Route::get('', [MovieController::class, 'fetch']);
             Route::post('add', [MovieController::class, 'add']);
             Route::delete('remove/{id}', [MovieController::class, 'remove']);

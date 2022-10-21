@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\MaxMovieRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class MovieToListRequest extends FormRequest
+class AddMovieToListRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +26,7 @@ class MovieToListRequest extends FormRequest
     public function rules()
     {
         return [
-            'movie_id' => ['required', 'exists:movies,id']
+            'movie_id' => ['required', 'exists:movies,id', new MaxMovieRule()]
         ];
     }
 }
