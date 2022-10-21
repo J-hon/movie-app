@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('list')->group(function () {
             Route::get('', [MovieController::class, 'fetch']);
             Route::post('add', [MovieController::class, 'add']);
-            Route::delete('remove', [MovieController::class, 'remove']);
+            Route::delete('remove/{id}', [MovieController::class, 'remove']);
         });
     });
 });

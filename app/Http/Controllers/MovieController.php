@@ -43,14 +43,13 @@ class MovieController extends BaseController
         return $this->responseJson(
             $response['status'],
             $response['code'],
-            $response['message'],
-            MovieResource::collection($response['data'])
+            $response['message']
         );
     }
 
-    public function remove(MovieToListRequest $request): JsonResponse
+    public function remove(int $movieId): JsonResponse
     {
-        $response = $this->movieService->removeFromMovieList(Auth::user(), $request->validated());
+        $response = $this->movieService->removeFromMovieList(Auth::user(), $movieId);
         return $this->responseJson(
             $response['status'],
             $response['code'],

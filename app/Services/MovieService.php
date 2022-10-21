@@ -67,9 +67,9 @@ class MovieService
         ];
     }
 
-    public function removeFromMovieList(Authenticatable $user, array $params): array
+    public function removeFromMovieList(Authenticatable $user, int $movieId): array
     {
-        if (!$user->movies()->where('movie_id', '=', $params['movie_id'])->exists()) {
+        if (!$user->movies()->where('movie_id', '=', $movieId)->exists()) {
             return [
                 'status'  => false,
                 'message' => 'Movie not found in your list!',
@@ -78,10 +78,10 @@ class MovieService
             ];
         }
 
-        $user->movies()->detach($params);
+        $user->movies()->detach($movieId);
         return [
             'status'  => true,
-            'message' => 'Movie added to list!',
+            'message' => 'Movie removed from list!',
             'code'    => 200,
             'data'    => []
         ];
