@@ -11,7 +11,7 @@ class MovieService
 
     public function get(): array
     {
-        $response = Movie::with('genres:id,name')->get();
+        $response = Movie::with('genres:id,name')->orderBy('release_date')->get();
         return [
             'status'  => true,
             'message' => 'Movies retrieved!',

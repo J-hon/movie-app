@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Guest from "../../Layouts/Guest";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {useDispatch} from "react-redux";
 import AuthService from "../../services/authService";
-import {authActions} from "../../store/auth.module";
+import { authActions } from "../../store/auth.module";
+import { toast } from "react-toastify";
 
 export default function Register() {
 
@@ -25,6 +26,7 @@ export default function Register() {
 
         AuthService.register(data)
             .then(response => {
+                toast(response.message);
                 dispatch(authActions.setAuth(response.data));
                 navigate('/dashboard');
             })
@@ -60,12 +62,12 @@ export default function Register() {
                             <input onChange={ onHandleChange } name="password" type="password" className="pl-3 h-12 block w-full max-w-lg rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
                         </div>
 
-                        <div>
-                            <label htmlFor="password_confirmation" className="block text-sm font-medium mb-1">
-                                Password Confirmation
-                            </label>
-                            <input onChange={ onHandleChange } name="password_confirmation" type="password" className="pl-3 h-12 block w-full max-w-lg rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
-                        </div>
+                        {/*<div>*/}
+                        {/*    <label htmlFor="password_confirmation" className="block text-sm font-medium mb-1">*/}
+                        {/*        Password Confirmation*/}
+                        {/*    </label>*/}
+                        {/*    <input onChange={ onHandleChange } name="password_confirmation" type="password" className="pl-3 h-12 block w-full max-w-lg rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>*/}
+                        {/*</div>*/}
                     </div>
 
                     <div className="flex items-center justify-between mt-6">

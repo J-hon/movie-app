@@ -8,8 +8,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function Dashboard() {
 
-    const [ movies, setMovies ] = useState([]);
+    const [ movies, setMovies ]   = useState([]);
     const [ trigger, setTrigger ] = useState(false);
+
     useEffect(() => {
         moviesService.get()
             .then(response => {
@@ -62,26 +63,19 @@ export default function Dashboard() {
                                         </div>
 
                                         <div className="relative mt-4">
-                                            <h3 className="text-sm font-medium text-gray-900">{ movie.name }</h3>
-                                        </div>
-
-                                        <div className="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
-                                            <div
-                                                aria-hidden="true"
-                                                className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
-                                            />
-                                            <p className="relative text-lg font-semibold text-white">{ movie.title }</p>
+                                            <h3 className="text-sm font-medium text-gray-900">{ movie.title }</h3>
+                                            <span className="mt-1 text-sm text-gray-500">{ movie.genres.join(', ') }</span>
                                         </div>
                                     </div>
 
                                     <div className="mt-6">
                                         { !movie.exists_in_list ?
                                             (<Add
-                                                addToMovieList={addToMovieList}
-                                                id={movie.id}
+                                                addToMovieList={ addToMovieList }
+                                                id={ movie.id }
                                             />) : (<Remove
-                                                removeFromMovieList={removeFromMovieList}
-                                                id={movie.id}
+                                                removeFromMovieList={ removeFromMovieList }
+                                                id={ movie.id }
                                             />)
                                         }
                                     </div>

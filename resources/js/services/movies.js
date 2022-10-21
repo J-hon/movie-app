@@ -11,6 +11,14 @@ class Movies {
             });
     }
 
+    getMyList() {
+        return api
+            .get(`${API_URL}/movies/list`)
+            .then((response) => {
+                return response.data;
+            });
+    }
+
     add(id) {
         return api
             .post(`${API_URL}/movies/list/add`, {
