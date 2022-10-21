@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import Guest from "../../Layouts/Guest";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import AuthService from "../../services/authService";
+import {authActions} from "../../store/auth.module";
 
 export default function Register() {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [data, setData] = useState({
         name: "",
         email: "",
-        password: "",
-        password_confirmation: ""
+        password: ""
     });
 
     const onHandleChange = e => {
@@ -17,7 +22,15 @@ export default function Register() {
 
     const submit = e => {
         e.preventDefault();
-        console.log(data);
+
+        AuthService.register(data)
+            .then(response => {
+                dispatch(authActions.setAuth(response.data));
+                navigate('/dashboard');
+            })
+            .catch(err => {
+                console.log(err.response.data);
+            });
     }
 
     return (

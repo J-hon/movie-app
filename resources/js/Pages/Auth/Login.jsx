@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Guest from "../../Layouts/Guest";
 import { Link, useNavigate } from "react-router-dom";
-import authService from "../../services/authService";
+import AuthService from "../../services/authService";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth.module";
 
@@ -21,7 +21,7 @@ export default function Login() {
     const submit = e => {
         e.preventDefault();
 
-        authService.login(data)
+        AuthService.login(data)
             .then(response => {
                 dispatch(authActions.setAuth(response.data));
                 navigate('/dashboard');
