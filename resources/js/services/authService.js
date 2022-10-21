@@ -15,6 +15,19 @@ class Auth {
             });
     }
 
+    register({ name, email, password, password_confirmation }) {
+        return api
+            .post(`${API_URL}/auth/signup`, {
+                name,
+                email,
+                password,
+                password_confirmation
+            })
+            .then((response) => {
+                return response.data;
+            });
+    }
+
     logout() {
         return api
             .post(`${API_URL}/auth/logout`, {})

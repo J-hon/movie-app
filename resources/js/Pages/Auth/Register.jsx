@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import Guest from "../../Layouts/Guest";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {useDispatch} from "react-redux";
+import AuthService from "../../services/authService";
+import { authActions } from "../../store/auth.module";
+import { toast } from "react-toastify";
 
 export default function Register() {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [data, setData] = useState({
         name: "",
@@ -17,7 +24,24 @@ export default function Register() {
 
     const submit = e => {
         e.preventDefault();
-        console.log(data);
+
+        AuthService.register(data)
+            .then(response => {
+                dispatch(authActions.setAuth(response.data));
+                navigate('/dashboard');
+            })
+            .catch(err => {
+                toast.error(err.response.data.message, {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                });
+            });
     }
 
     return (

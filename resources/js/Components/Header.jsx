@@ -1,15 +1,35 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import TokenService from "../services/token";
+import AuthService from "../services/authService";
 
-export default function AppHeader(){
+export default function AppHeader() {
+
+    const navigate = useNavigate();
 
     const [toggle, setToggle] = useState(false);
-
-    const initial = TokenService.getUser().name.charAt(0).toUpperCase();
+    const initial             = TokenService.getUser().name.charAt(0).toUpperCase();
 
     const handleToggle = (e) => {
         setToggle(prevState => !prevState);
+    }
+
+    const submit = e => {
+        e.preventDefault();
+
+        AuthService.logout()
+            .then(response => {
+                TokenService.removeUser();
+                navigate('/');
+            })
+            .catch(err => {
+                console.log(err.response.data);
+            });
+    }
+
+    const goToMyMovieList = e => {
+        e.preventDefault();
+        navigate('/my-movies');
     }
 
     return (
@@ -35,8 +55,8 @@ export default function AppHeader(){
                                     {
                                         toggle &&
                                         (<div className="absolute left-0 right-2 z-10 mt-2 w-48 origin-top-left rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabIndex="-1">
-                                            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-1">My Movies</a>
-                                            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-2">Sign out</a>
+                                            <a href="#" onClick={ goToMyMovieList } className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-1">My Movies</a>
+                                            <a href="#" onClick={ submit } className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-2">Sign out</a>
                                         </div>)
                                     }
                                 </div>

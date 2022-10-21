@@ -1,33 +1,43 @@
 import React, { useState } from "react";
 import Guest from "../../Layouts/Guest";
 import { Link, useNavigate } from "react-router-dom";
-import authService from "../../services/authService";
+import AuthService from "../../services/authService";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth.module";
+import { toast } from "react-toastify";
 
 export default function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [data, setData] = useState({
+    const [ data, setData ] = useState({
         email: "",
         password: ""
     });
 
     const onHandleChange = e => {
-        setData({...data, [e.target.name] : e.target.value });
+        setData({ ...data, [ e.target.name ] : e.target.value });
     };
 
     const submit = e => {
         e.preventDefault();
 
-        authService.login(data)
+        AuthService.login(data)
             .then(response => {
                 dispatch(authActions.setAuth(response.data));
                 navigate('/dashboard');
             })
             .catch(err => {
-                console.log(err.response.data);
+                toast.error(err.response.data.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                });
             });
     }
 
@@ -35,14 +45,14 @@ export default function Login() {
         <Guest>
             <div className="max-w-sm mx-auto px-4 py-8">
                 <h1 className="text-3xl text-slate-800 font-bold mb-6">Login</h1>
-                {/* Form */}
-                <form onSubmit={submit}>
+
+                <form onSubmit={ submit }>
                     <div className="space-y-4">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium mb-1">
                                 Email
                             </label>
-                            <input onChange={ onHandleChange } name="email" className="pl-3 h-12 block w-full max-w-lg rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+                            <input onChange={ onHandleChange } type="email" name="email" className="pl-3 h-12 block w-full max-w-lg rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
                         </div>
 
                         <div>

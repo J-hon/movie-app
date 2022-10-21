@@ -11,9 +11,17 @@ class Movies {
             });
     }
 
+    getMyList() {
+        return api
+            .get(`${API_URL}/user/movies`)
+            .then((response) => {
+                return response.data;
+            });
+    }
+
     add(id) {
         return api
-            .post(`${API_URL}/movies/list/add`, {
+            .post(`${API_URL}/user/movies/add`, {
                 movie_id: id
             }).then((response) => {
                 return response.data;
@@ -22,7 +30,7 @@ class Movies {
 
     remove(id) {
         return api
-            .delete(`${API_URL}/movies/list/remove/${id}`)
+            .delete(`${API_URL}/user/movies/remove/${id}`)
             .then((response) => {
                 return response.data;
             });
