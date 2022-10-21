@@ -4,12 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/authService";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth.module";
+import { toast } from "react-toastify";
 
 export default function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const [ errors, setErrors ] = useState([]);
 
     const [ data, setData ] = useState({
         email: "",
@@ -29,8 +28,16 @@ export default function Login() {
                 navigate('/dashboard');
             })
             .catch(err => {
-                setErrors(err.response.data);
-                console.log(err.response.data);
+                toast.error(err.response.data.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                });
             });
     }
 
