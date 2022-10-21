@@ -51,7 +51,7 @@ class MoviesTest extends TestCase
 
         $this->user->movies()->attach($movie->id);
 
-        $this->deleteJson("$this->baseUrl/movies/list/remove", ['movie_id' => $movie->id])->assertStatus(200);
+        $this->deleteJson("$this->baseUrl/movies/list/remove/$movie->id")->assertStatus(200);
 
         $this->assertDatabaseMissing('movie_lists', [
             'user_id'  => $this->user->id,
@@ -63,6 +63,6 @@ class MoviesTest extends TestCase
     {
         $movie = Movie::factory()->create();
 
-        $this->deleteJson("$this->baseUrl/movies/list/remove", ['movie_id' => $movie->id])->assertStatus(400);
+        $this->deleteJson("$this->baseUrl/movies/list/remove/$movie->id")->assertStatus(400);
     }
 }
